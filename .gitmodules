@@ -1,3 +1,6 @@
 [submodule "kotlin/tdd-kotlin"]
 	path = kotlin/tdd-kotlin
 	url = https://github.com/dskst/tdd-kotlin.git
+[submodule "github/github-action-hands-on"]
+	path = github/github-action-hands-on
+	url = https://github.com/dskst/github-action-hands-on.git
