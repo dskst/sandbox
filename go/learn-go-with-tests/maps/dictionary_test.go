@@ -3,10 +3,16 @@ package maps
 import "testing"
 
 func TestSearch(t *testing.T) {
-	dictionary := map[string]string{"test": "this is just test"}
+	dictionary := Dictionary{"test": "this is just test"}
 
-	got := Search(dictionary, "test")
+	got := dictionary.Search("test")
 	want := "this is just test"
+
+	assertStrings(t, got, want)
+}
+
+func assertStrings(t *testing.T, got, want string) {
+	t.Helper()
 
 	if got != want {
 		t.Errorf("got %q want %q", got, want)
