@@ -4,14 +4,30 @@ option go_package = "pkg/grpc";
 
 package myapp;
 
+/**
+ * GreetingService は、挨拶を返す機能を提供する
+ * - Internal, Canceled を返却する可能性がある
+ **/
 service GreetingService {
+  // 挨拶を伝えて、返答する
   rpc Hello (HelloRequest) returns (HelloResponse);
 }
 
+/**
+ * Hello は name で指定した名前を送り、その名前に対して挨拶文が返される
+ * - 返却される挨拶文は固定値になる
+ *
+ * [error]
+ * - InvalidArgument:
+ *   - name がから文字になっている
+ * - Aborted:
+ *   - システムで何らかの理由により処理が失敗。リトライをすること。
+ **/
 message HelloRequest {
   string name = 1;
 }
 
+// レスポンスには挨拶文が含まれる
 message HelloResponse {
   string message = 1;
 }
