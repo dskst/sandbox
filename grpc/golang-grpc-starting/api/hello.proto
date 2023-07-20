@@ -13,6 +13,8 @@ service GreetingService {
   rpc Hello (HelloRequest) returns (HelloResponse);
   // 挨拶を伝えて、返答をストリームで受け取る
   rpc HelloServerStream (HelloRequest) returns (stream HelloResponse);
+  // 挨拶をストリームで受け取り、返答を返す
+  rpc HelloClientStream (stream HelloRequest) returns (HelloResponse);
 }
 
 /**

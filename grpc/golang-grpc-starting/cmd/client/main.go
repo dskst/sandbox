@@ -102,7 +102,7 @@ func HelloServerStream() {
 	for {
 		res, err := stream.Recv()
 		if errors.Is(err, io.EOF) {
-			fmt.Println("all the responses have alredy received.")
+			fmt.Println("all the responses have already received.")
 			break
 		}
 
