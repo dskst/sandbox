@@ -11,6 +11,8 @@ package myapp;
 service GreetingService {
   // 挨拶を伝えて、返答する
   rpc Hello (HelloRequest) returns (HelloResponse);
+  // 挨拶を伝えて、返答をストリームで受け取る
+  rpc HelloServerStream (HelloRequest) returns (stream HelloResponse);
 }
 
 /**
