@@ -15,6 +15,8 @@ service GreetingService {
   rpc HelloServerStream (HelloRequest) returns (stream HelloResponse);
   // 挨拶をストリームで受け取り、返答を返す
   rpc HelloClientStream (stream HelloRequest) returns (HelloResponse);
+  // 挨拶をストリームで受け取り、返答をストリームで返す
+  rpc HelloBiStreams (stream HelloRequest) returns (stream HelloResponse);
 }
 
 /**
