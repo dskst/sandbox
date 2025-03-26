@@ -18,10 +18,11 @@ repositories {
 	maven { url 'https://repo.spring.io/snapshot' }
 }
 
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation platform("org.springframework.ai:spring-ai-mcp-server-spring-boot-starter")
-	implementation platform("org.springframework:spring-web")
+	// implementation platform("org.springframework.ai:spring-ai-mcp-server-spring-boot-starter")
+	// implementation platform("org.springframework:spring-web")
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
