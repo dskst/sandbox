@@ -1,5 +1,7 @@
 package modelcontextprotocol.sandbox.dskst.mcpserver.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.web.client.RestClient;
 public class WeatherService {
 
     private final RestClient restClient;
+    private final ObjectMapper objectMapper;
 
     public WeatherService() {
         this.restClient = RestClient.builder()
@@ -16,6 +19,7 @@ public class WeatherService {
                 .defaultHeader("Accept", "application/geo+json")
                 .defaultHeader("User-Agent", "WeatherApiClient/1.0 (your@email.com)")
                 .build();
+        this.objectMapper = new ObjectMapper();
     }
 
     @Tool(description = "Get weather forecast for a specific latitude/longitude")
@@ -26,7 +30,34 @@ public class WeatherService {
         // - Temperature and unit
         // - Wind speed and direction
         // - Detailed forecast description
-        return "No forecast found";
+        String url = String.format("/points/%f,%f", latitude, longitude);
+        
+        try {
+            JsonNode pointResponse = restClient.get()
+                    .uri(url)
+                    .retrieve()
+                    .body(JsonNode.class);
+            
+            System.out.println("pointResponse: " + pointResponse);
+            
+            if (pointResponse == null || !pointResponse.has("properties") || 
+                !pointResponse.get("properties").has("forecast")) {
+                throw new RuntimeException("Invalid weather data format: forecast URL not found");
+            }
+            
+            String forecastUrl = pointResponse.get("properties").get("forecast").asText();
+            String forecastPath = forecastUrl.replace("https://api.weather.gov", "");
+            
+            JsonNode forecastResponse = restClient.get()
+                    .uri(forecastPath)
+                    .retrieve()
+                    .body(JsonNode.class);
+                    
+            return objectMapper.writeValueAsString(forecastResponse);
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch weather data: " + e.getMessage(), e);
+        }
     }
 
     @Tool(description = "Get weather alerts for a US state")
